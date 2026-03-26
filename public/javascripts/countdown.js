@@ -79,7 +79,7 @@ function closeForm() {
 }
 
 function syncState(status) {
-  fetch('/api/status', {
+  fetch('/api/status?id=' + TIMER_ID, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ setTime: Number(time_limit), timeLeft: timeLeft, status: status })
@@ -265,10 +265,3 @@ function setCircleDasharray() {
     .setAttribute("stroke-dasharray", circleDasharray);
 }
 
-// Generate QR code pointing to the REST API status endpoint
-QRCode.toCanvas(
-  document.getElementById('qr-canvas'),
-  'https://www.example.com/api/status',
-  { width: 96, margin: 1 },
-  function() {}
-);

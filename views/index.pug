@@ -5,9 +5,11 @@ block content
     img(src="images/dl-telekom-logo-klein.jpg")
   #app
   #controls
-  #qr-corner
-    canvas#qr-canvas
-    p www.example.com/api/status
+  #qr-corner-left
+    p Scan to sync
+    img(src=viewQr width="115" height="115")
+  script.
+    var TIMER_ID = '#{timerId}';
   script(src="javascripts/countdown.js")
 
 

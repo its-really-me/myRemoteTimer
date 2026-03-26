@@ -62,7 +62,7 @@ h1 {
   font-size: 48px;
 }
 
-img {
+#logo img {
   height: 10vh;
   right: 0;
 }
@@ -173,6 +173,26 @@ input:focus {
   right: 16px;
   text-align: center;
   opacity: 0.75;
+}
+
+#qr-corner-left {
+  position: fixed;
+  bottom: 16px;
+  left: 50px;
+  text-align: center;
+  opacity: 0.75;
+}
+
+#qr-corner-left img {
+  display: block;
+  width: 115px;
+  height: 115px;
+}
+
+#qr-corner-left p {
+  margin: 0 0 4px;
+  font-size: 22px;
+  color: #555;
 }
 
 #qr-corner canvas {

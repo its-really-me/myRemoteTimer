@@ -1,25 +1,42 @@
 var express = require('express');
 var router = express.Router();
 
-// In-memory timer state — updated by the client on every tick and state change
-var timerState = {
-  setTime: 120,
-  timeLeft: 120,
-  status: 'stopped'  // 'running' | 'paused' | 'stopped' | 'finished'
-};
+// In-memory timer states keyed by timer ID
+var timerStates = {};
 
-// GET /api/status — return current timer state
+function getState(id) {
+  if (!timerStates[id]) {
+    timerStates[id] = {
+      setTime: 120,
+      timeLeft: 120,
+      status: 'stopped',  // 'running' | 'paused' | 'stopped' | 'finished'
+      statusChangedAt: Date.now()
+    };
+  }
+  return timerStates[id];
+}
+
+// GET /api/status?id=<id> — return current timer state
 router.get('/status', function(req, res) {
-  res.json(timerState);
+  res.json(getState(req.query.id));
 });
 
-// POST /api/status — receive state update from the browser client
+// GET /api/view?id=<id> — render a read-only graphical timer display
+router.get('/view', function(req, res) {
+  res.render('timer-view', { title: 'Timer View', state: getState(req.query.id) });
+});
+
+// POST /api/status?id=<id> — receive state update from the browser client
 router.post('/status', function(req, res) {
+  var state = getState(req.query.id);
   var body = req.body;
-  if (typeof body.setTime === 'number') timerState.setTime = body.setTime;
-  if (typeof body.timeLeft === 'number') timerState.timeLeft = body.timeLeft;
-  if (typeof body.status === 'string') timerState.status = body.status;
-  res.json(timerState);
+  if (typeof body.setTime === 'number') state.setTime = body.setTime;
+  if (typeof body.timeLeft === 'number') state.timeLeft = body.timeLeft;
+  if (typeof body.status === 'string' && body.status !== state.status) {
+    state.status = body.status;
+    state.statusChangedAt = Date.now();
+  }
+  res.json(state);
 });
 
 module.exports = router;
