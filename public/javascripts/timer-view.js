@@ -42,13 +42,24 @@ document.getElementById('app').innerHTML =
 updateRing(timeLeft);
 
 var SOUNDS = {
-  finished: 'jingles/Tjingle.mp3',
-  paused:   'jingles/pause.mp3',
-  stopped:  'jingles/reset.mp3'
+  finished: '/jingles/Tjingle.mp3',
+  paused:   '/jingles/pause.mp3',
+  stopped:  '/jingles/reset.mp3'
 };
 
 var prevStatus = timerStatus;
 var timerId = INITIAL_STATE.id;
+var audioEnabled = false;
+
+// Browsers block audio without a prior user gesture — show a button to unlock it
+var audioBtn = document.createElement('button');
+audioBtn.textContent = 'Enable sound';
+audioBtn.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:8px 14px;cursor:pointer;';
+audioBtn.onclick = function() {
+  audioEnabled = true;
+  audioBtn.remove();
+};
+document.body.appendChild(audioBtn);
 
 setInterval(function() {
   fetch('/api/status?id=' + timerId)
@@ -67,7 +78,7 @@ setInterval(function() {
       updateRing(timeLeft);
 
       if (state.status !== prevStatus) {
-        if (SOUNDS[state.status]) new Audio(SOUNDS[state.status]).play();
+        if (audioEnabled && SOUNDS[state.status]) new Audio(SOUNDS[state.status]).play();
         prevStatus = state.status;
       }
     })
