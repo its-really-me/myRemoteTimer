@@ -23,7 +23,9 @@ router.get('/status', function(req, res) {
 
 // GET /api/view?id=<id> — render a read-only graphical timer display
 router.get('/view', function(req, res) {
-  res.render('timer-view', { title: 'Timer View', state: getState(req.query.id) });
+  var id = req.query.id;
+  var state = Object.assign({ id: id }, getState(id));
+  res.render('timer-view', { title: 'Timer View', state: state });
 });
 
 // POST /api/status?id=<id> — receive state update from the browser client

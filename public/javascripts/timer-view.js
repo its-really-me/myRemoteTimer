@@ -1,9 +1,9 @@
 var setTime = Number(INITIAL_STATE.setTime) || 120;
 var timerStatus = INITIAL_STATE.status;
 // Normalise timeLeft based on status so the view is always consistent
-var timeLeft = timerStatus === 'stopped' ? setTime
+var timeLeft = timerStatus === 'stopped'  ? setTime
              : timerStatus === 'finished' ? 0
-             : timerStatus === 'running' ? Math.max(0, Number(INITIAL_STATE.timeLeft) - 1)
+             : timerStatus === 'running'  ? Math.max(0, Number(INITIAL_STATE.timeLeft) - 1)
              : Number(INITIAL_STATE.timeLeft);
 
 var FULL_DASH_ARRAY = 283;
@@ -41,32 +41,38 @@ document.getElementById('app').innerHTML =
 
 updateRing(timeLeft);
 
-if (timerStatus === 'running') {
-  var timerInterval = setInterval(function() {
-    timeLeft -= 1;
-    if (timeLeft < 0) timeLeft = 0;
-    document.getElementById('base-timer-label').innerHTML = formatTime(timeLeft);
-    updateRing(timeLeft);
-    if (timeLeft === 0) {
-      clearInterval(timerInterval);
-    }
-  }, 1000);
-}
+var SOUNDS = {
+  finished: 'jingles/Tjingle.mp3',
+  paused:   'jingles/pause.mp3',
+  stopped:  'jingles/reset.mp3'
+};
 
-// Stop refreshing if paused/stopped for more than 1 minute; show Sync button instead
-var idleSince = INITIAL_STATE.statusChangedAt || Date.now();
-var idleMs = Date.now() - idleSince;
-var inactive = (timerStatus === 'paused' || timerStatus === 'stopped') && idleMs > 180000;
+var prevStatus = timerStatus;
+var timerId = INITIAL_STATE.id;
 
-if (!inactive) {
-  setTimeout(function() { location.reload(); }, 3000);
-} else {
-  var btn = document.createElement('button');
-  btn.textContent = 'Sync again';
-  btn.style.width = '150px';
-  btn.onclick = function() { location.reload(); };
-  document.body.appendChild(btn);
-}
+setInterval(function() {
+  fetch('/api/status?id=' + timerId)
+    .then(function(r) { return r.json(); })
+    .then(function(state) {
+      setTime = Number(state.setTime) || setTime;
+      WARNING_THRESHOLD = setTime / 4;
+      ALERT_THRESHOLD = setTime / 10;
+
+      timeLeft = state.status === 'stopped'  ? setTime
+               : state.status === 'finished' ? 0
+               : state.status === 'running'  ? Math.max(0, Number(state.timeLeft) - 1)
+               : Number(state.timeLeft);
+
+      document.getElementById('base-timer-label').innerHTML = formatTime(timeLeft);
+      updateRing(timeLeft);
+
+      if (state.status !== prevStatus) {
+        if (SOUNDS[state.status]) new Audio(SOUNDS[state.status]).play();
+        prevStatus = state.status;
+      }
+    })
+    .catch(function() {});
+}, 1000);
 
 function formatTime(time) {
   var minutes = Math.floor(time / 60);
