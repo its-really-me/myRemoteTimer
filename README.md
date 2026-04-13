@@ -32,12 +32,6 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) in your browser. A session ID is auto-generated and appended to the URL (e.g. `/?id=<uuid>`).
 
-### URL Parameters
-
-| Parameter  | Description                        | Example               |
-|------------|------------------------------------|-----------------------|
-| `duration` | Countdown duration in seconds      | `?duration=300` (5 min) |
-| `id`       | Session ID (auto-generated if omitted) | `?id=<uuid>` |
 
 ## Read-Only View
 
@@ -94,6 +88,15 @@ docker run -p 3000:3000 remote-timer
 ```
 
 The application listens on port **3000** by default. Override with the `PORT` environment variable.
+
+### Environment Variables
+
+| Variable   | Default                  | Description                                                                 |
+|------------|--------------------------|-----------------------------------------------------------------------------|
+| `PORT`     | `3000`                   | Port the HTTP server listens on                                              |
+| `BASE_URL` | `http://localhost:3000`  | Public base URL of the app, used to generate the QR code link on the timer page |
+
+`BASE_URL` must be set to the externally reachable URL when deploying (e.g. `https://your-app.run.app`). Without it, the QR code will encode a localhost URL that is not reachable from other devices.
 
 ## Deployment
 
