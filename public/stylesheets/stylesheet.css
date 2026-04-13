@@ -75,7 +75,7 @@ h1 {
   width: auto;
   height: auto;
   padding: 4px 8px;
-  font-size: 84px;
+  font-size: 75px;
   color: rgb(180, 183, 182);
   opacity: 1;
   cursor: pointer;
@@ -83,7 +83,7 @@ h1 {
 
 @media (min-width: 768px) {
   .sound-toggle {
-    font-size: 42px;
+    font-size: 62px;
   }
 }
 
