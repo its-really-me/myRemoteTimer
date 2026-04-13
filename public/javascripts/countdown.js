@@ -1,8 +1,8 @@
 // Credit: Mateusz Rybczonec
-let time_limit = timeLimit();
+let time_limit = 120;
 const FULL_DASH_ARRAY = 283;
-const WARNING_THRESHOLD = time_limit / 4;
-const ALERT_THRESHOLD = time_limit / 10;
+let WARNING_THRESHOLD = time_limit / 4;
+let ALERT_THRESHOLD = time_limit / 10;
 let min = getMin(time_limit);
 let sec = getSec(time_limit);
 
@@ -57,7 +57,7 @@ document.getElementById("controls").innerHTML = `
     <button id="reset-button" class="disabled-button" cursor="auto" disabled onclick="resetCountdown()">Reset</button>
     <!-- The form to change the duration -->
     <div class="form-popup" id="changeForm">
-      <form id="duration-form" action="/" onsubmit="return changeDuration(this)" class="form-container">
+      <form id="duration-form" onsubmit="return changeDuration(this)" class="form-container">
         <h1>Change duration</h1>
         <label for="min"><b>Min</b></label>
         <input id="minutes" type="number" value=${min} name="minutes" required">
@@ -113,30 +113,33 @@ function onTimesUp() {
   new Audio("jingles/Tjingle.mp3").play();
 }
 
-function getParameter() {
-  var GET = {};
-  var query = window.location.search.substring(1).split("&");
-  for (var i = 0, max = query.length; i < max; i++) {
-    if (query[i] === "")
-      // check for trailing & with no param
-      continue;
-    var param = query[i].split("=");
-    GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
-  }
-  return GET;
-}
-
-function timeLimit() {
-  time = getParameter().duration;
-  if (time == undefined) time = 120;
-  return time;
-}
-
-/* work in progress */
 function changeDuration(form) {
-  form.duration.value=Number(form.duration.value)+Number(form.minutes.value)*60;
-  
-return true;
+  var totalSeconds = Number(form.minutes.value) * 60 + Number(form.duration.value);
+  if (totalSeconds <= 0) return false;
+
+  time_limit = totalSeconds;
+  WARNING_THRESHOLD = time_limit / 4;
+  ALERT_THRESHOLD = time_limit / 10;
+  COLOR_CODES.warning.threshold = WARNING_THRESHOLD;
+  COLOR_CODES.alert.threshold = ALERT_THRESHOLD;
+
+  clearInterval(timerInterval);
+  timePassed = 0;
+  timeLeft = time_limit;
+  timerInterval = null;
+
+  setCircleDasharray();
+  setRemainingPathColor(timeLeft);
+  setButtonStates("reset");
+  document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
+  syncState('stopped');
+
+  min = getMin(time_limit);
+  sec = getSec(time_limit);
+  form.minutes.value = min;
+  form.duration.value = sec;
+
+  return false;
 }
 
 
