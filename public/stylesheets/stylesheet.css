@@ -75,10 +75,16 @@ h1 {
   width: auto;
   height: auto;
   padding: 4px 8px;
-  font-size: 28px;
+  font-size: 84px;
   color: rgb(180, 183, 182);
   opacity: 1;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .sound-toggle {
+    font-size: 42px;
+  }
 }
 
 .sound-toggle:hover {
