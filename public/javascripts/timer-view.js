@@ -51,15 +51,14 @@ var prevStatus = timerStatus;
 var timerId = INITIAL_STATE.id;
 var audioEnabled = false;
 
-// Browsers block audio without a prior user gesture — show a button to unlock it
-var audioBtn = document.createElement('button');
-audioBtn.textContent = 'Enable sound';
-audioBtn.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:8px 14px;cursor:pointer;';
-audioBtn.onclick = function() {
-  audioEnabled = true;
-  audioBtn.remove();
+var soundBtn = document.getElementById('sound-toggle');
+var soundIcon = document.getElementById('sound-icon');
+
+soundBtn.onclick = function() {
+  audioEnabled = !audioEnabled;
+  soundIcon.className = audioEnabled ? 'fa fa-volume-up' : 'fa fa-volume-off';
+  soundBtn.classList.toggle('enabled', audioEnabled);
 };
-document.body.appendChild(audioBtn);
 
 setInterval(function() {
   fetch('/api/status?id=' + timerId)
