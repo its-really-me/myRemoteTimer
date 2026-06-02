@@ -53,8 +53,8 @@ document.getElementById("controls").innerHTML = `
   <!-- Buttons to start, stop and reset the countdown and to open the dialog to change the duration-->
     <button id="change-button" class="change-button" onclick="openForm()">Setup</button>
     <button id="start-button" onclick="startTimer()">Start</button>
-    <button id="pause-button" class="disabled-button" disabled onclick="pauseCountdown()">Pause</button>
-    <button id="reset-button" class="disabled-button" cursor="auto" disabled onclick="resetCountdown()">Reset</button>
+    <button id="pause-button" disabled onclick="pauseCountdown()">Pause</button>
+    <button id="reset-button" disabled onclick="resetCountdown()">Reset</button>
     <!-- The form to change the duration -->
     <div class="form-popup" id="changeForm">
       <form id="duration-form" onsubmit="return changeDuration(this)" class="form-container">
