@@ -158,12 +158,14 @@ button:hover {
   opacity: 1;
 }
 
-.disabled-button {
+.disabled-button,
+button:disabled {
   background-color: var(--text-muted);
   cursor: auto;
 }
 
-.disabled-button:hover {
+.disabled-button:hover,
+button:disabled:hover {
   background-color: var(--text-muted);
 }
 

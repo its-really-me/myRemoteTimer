@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   }
   var baseUrl = process.env.BASE_URL || 'http://localhost:3000';
   var viewUrl = baseUrl + '/api/view?id=' + id;
-  QRCode.toDataURL(viewUrl, { width: 96, margin: 1, color: { dark: '#F97316', light: '#ffffff' } }, function(err, viewQr) {
+  QRCode.toDataURL(viewUrl, { width: 96, margin: 1, color: { dark: '#444444', light: '#ffffff' } }, function(err, viewQr) {
     res.render('index', { title: 'myRemoteTimer', viewQr: viewQr || '', timerId: id });
   });
 });

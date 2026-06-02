@@ -187,41 +187,18 @@ function setButtonStates(state) {
   const change = document.getElementById("change-button");
   if (state == "started") {
     start.setAttribute("disabled", "");
-    start.style.backgroundColor = "rgb(180, 183, 182)";
-    start.style.cursor = "auto";
     change.setAttribute("disabled", "");
-    change.style.backgroundColor = "rgb(180, 183, 182)";
-    change.style.cursor = "auto";
     reset.removeAttribute("disabled");
-    reset.style.backgroundColor = "rgb(226, 0, 116)";
-    reset.style.cursor = "pointer";
     pause.removeAttribute("disabled");
-    pause.style.backgroundColor = "rgb(226, 0, 116)";
-    pause.style.visibility = "visible";
-    pause.style.cursor = "pointer";
   } else if (state == "reset") {
     start.removeAttribute("disabled");
-    start.style.backgroundColor = "rgb(226, 0, 116)";
-    start.style.cursor = "pointer";
     change.removeAttribute("disabled");
-    change.style.backgroundColor = "rgb(226, 0, 116)";
-    change.style.cursor = "pointer";
     reset.setAttribute("disabled", "");
-    reset.style.backgroundColor = "rgb(180, 183, 182)";
-    reset.style.cursor = "auto";
     pause.setAttribute("disabled", "");
-    pause.style.backgroundColor = "rgb(180, 183, 182)";
-    pause.style.cursor = "auto";
   } else if (state == "paused") {
     start.removeAttribute("disabled");
-    start.style.backgroundColor = "rgb(226, 0, 116)";
-    start.style.cursor = "pointer";
     reset.removeAttribute("disabled");
-    reset.style.backgroundColor = "rgb(226, 0, 116)";
-    reset.style.cursor = "pointer";
     pause.setAttribute("disabled", "");
-    pause.style.backgroundColor = "rgb(180, 183, 182)";
-    pause.style.cursor = "auto";
   }
 }
 
