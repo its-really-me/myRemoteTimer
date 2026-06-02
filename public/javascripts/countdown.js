@@ -109,8 +109,9 @@ function resetCountdown() {
 
 function onTimesUp() {
   clearInterval(timerInterval);
+  setButtonStates("reset");
   syncState('finished');
-  new Audio("jingles/Tjingle.mp3").play();
+  new Audio("jingles/chime.mp3").play();
 }
 
 function changeDuration(form) {
@@ -203,31 +204,15 @@ function setButtonStates(state) {
 }
 
 function setRemainingPathColor(timeLeft) {
-  const { alert, warning, info } = COLOR_CODES;
+  const { alert, warning } = COLOR_CODES;
+  const path = document.getElementById("base-timer-path-remaining");
+  path.classList.remove("green", "orange", "red");
   if (timeLeft <= alert.threshold) {
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(warning.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.add(alert.color);
+    path.classList.add("red");
   } else if (timeLeft <= warning.threshold) {
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(info.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.add(warning.color);
-  } else if (timeLeft > warning.threshold) {
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.add(info.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(warning.color);
-    document
-      .getElementById("base-timer-path-remaining")
-      .classList.remove(alert.color);
+    path.classList.add("orange");
+  } else {
+    path.classList.add("green");
   }
 }
 

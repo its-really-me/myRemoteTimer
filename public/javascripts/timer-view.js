@@ -42,7 +42,7 @@ document.getElementById('app').innerHTML =
 updateRing(timeLeft);
 
 var SOUNDS = {
-  finished: '/jingles/Tjingle.mp3',
+  finished: '/jingles/chime.mp3',
   paused:   '/jingles/pause.mp3',
   stopped:  '/jingles/reset.mp3'
 };
