@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:lts-alpine
+FROM node:lts-alpine
 ENV NODE_ENV=production
 ENV BASE_URL=http://localhost:3000
 WORKDIR /usr/src/app
