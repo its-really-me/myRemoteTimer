@@ -1,4 +1,4 @@
-# remoteTimer — Countdown Timer
+# myRemoteTimer — Countdown Timer
 
 A lightweight, browser-based countdown timer application built with Express.js and vanilla JavaScript. Designed for use in meetings, presentations, or any scenario requiring a shared visual timer. Deployed as a Docker image on serverless infrastructure.
 
@@ -83,8 +83,15 @@ docker-compose -f docker-compose.debug.yml up
 ### Build image manually
 
 ```bash
-docker build -t remote-timer .
-docker run -p 3000:3000 remote-timer
+docker build -t my-remote-timer .
+docker run -p 3000:3000 my-remote-timer
+```
+
+### Pre-built image (GitHub Container Registry)
+
+```bash
+docker pull ghcr.io/its-really-me/my-remote-timer:latest
+docker run -p 3000:3000 ghcr.io/its-really-me/my-remote-timer:latest
 ```
 
 The application listens on port **3000** by default. Override with the `PORT` environment variable.
@@ -100,7 +107,7 @@ The application listens on port **3000** by default. Override with the `PORT` en
 
 ## Deployment
 
-The application is packaged as a Docker image and deployed on a **serverless container platform** (e.g. Google Cloud Run, AWS App Runner, or similar). The image is based on `node:lts-alpine` and runs as a non-root `node` user for security.
+The application is packaged as a Docker image and deployed on **Google Cloud Run**. The image is based on `node:lts-alpine` and runs as a non-root `node` user for security.
 
 Key deployment characteristics:
 - Stateless between restarts — timer state is in-memory only
@@ -108,10 +115,47 @@ Key deployment characteristics:
 - Port `3000` exposed by default
 - `NODE_ENV=production` disables development middleware
 
+### Google Cloud Run (manual deploy)
+
+```bash
+# 1. Authenticate
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# 2. Create Artifact Registry repository (once)
+gcloud artifacts repositories create my-remote-timer \
+  --repository-format=docker \
+  --location=europe-west3
+
+# 3. Build and push image
+gcloud builds submit --tag europe-west3-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest
+
+# 4. Deploy
+gcloud run deploy my-remote-timer \
+  --image europe-west3-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest \
+  --region europe-west3 \
+  --platform managed \
+  --allow-unauthenticated \
+  --port 3000 \
+  --set-env-vars NODE_ENV=production,BASE_URL=https://YOUR_CLOUD_RUN_URL
+```
+
+### Google Cloud Run (CI/CD via Cloud Build)
+
+A `cloudbuild.yaml` is included. Connect the GitHub repo in the Cloud Build console and set the following substitution variables:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `_REGION` | GCP region | `europe-west3` |
+| `_REPO` | Artifact Registry repo name | `my-remote-timer` |
+| `_SERVICE_URL` | Cloud Run service URL (set after first deploy) | `my-remote-timer-abc123-ew.a.run.app` |
+
+Cloud Build triggers a build + deploy on every push to `main`.
+
 ## Project Structure
 
 ```
-remoteTimer/
+myRemoteTimer/
 ├── app.js                    # Express app configuration
 ├── bin/www                   # HTTP server entry point
 ├── routes/
