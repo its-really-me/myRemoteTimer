@@ -1,14 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap");
+
+/* ─── Variables ───────────────────────────────────────────── */
+:root {
+  --orange:        #F97316;
+  --orange-light:  #FFEDD5;
+  --orange-mid:    #FED7AA;
+  --orange-dark:   #C2410C;
+  --orange-border: rgba(249, 115, 22, 0.28);
+  --orange-glow:   rgba(249, 115, 22, 0.09);
+  --bg:            #FFFAF5;
+  --surface:       #FFFFFF;
+  --text:          #1C1917;
+  --text-muted:    #78716C;
+  --radius-sm:     10px;
+  --radius-md:     16px;
+  --shadow:        0 4px 24px rgba(249, 115, 22, 0.09);
+  --shadow-hover:  0 8px 32px rgba(249, 115, 22, 0.18);
+}
+
+/* ─── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+
 body {
-  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--text);
   display: grid;
-  height: 100vh;
+  min-height: 100vh;
   place-items: center;
+  margin: 0;
 }
 
 h1 {
   font-size: 1.4rem;
+  color: var(--orange-dark);
+  font-weight: 700;
 }
 
+/* ─── Timer circle ────────────────────────────────────────── */
 .base-timer {
   position: relative;
   width: 300px;
@@ -26,7 +57,7 @@ h1 {
 
 .base-timer__path-elapsed {
   stroke-width: 7px;
-  stroke: grey;
+  stroke: var(--orange-mid);
 }
 
 .base-timer__path-remaining {
@@ -39,16 +70,19 @@ h1 {
   stroke: currentColor;
 }
 
+/* info / normal — main orange */
 .base-timer__path-remaining.green {
-  color: rgb(226, 0, 116);
+  color: var(--orange);
 }
 
+/* warning — dark orange */
 .base-timer__path-remaining.orange {
-  color: orange;
+  color: var(--orange-dark);
 }
 
+/* alert — red */
 .base-timer__path-remaining.red {
-  color: red;
+  color: #DC2626;
 }
 
 .base-timer__label {
@@ -60,8 +94,11 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 48px;
+  font-weight: 700;
+  color: var(--text);
 }
 
+/* ─── Timer container ─────────────────────────────────────── */
 #timer-container {
   display: flex;
   flex-direction: column;
@@ -69,6 +106,7 @@ h1 {
   gap: 16px;
 }
 
+/* ─── Sound toggle ────────────────────────────────────────── */
 .sound-toggle {
   background: none;
   border: none;
@@ -76,9 +114,10 @@ h1 {
   height: auto;
   padding: 4px 8px;
   font-size: 75px;
-  color: rgb(180, 183, 182);
+  color: var(--orange-mid);
   opacity: 1;
   cursor: pointer;
+  transition: color 0.18s;
 }
 
 @media (min-width: 768px) {
@@ -88,119 +127,130 @@ h1 {
 }
 
 .sound-toggle:hover {
-  opacity: 1;
-  color: rgb(226, 0, 116);
+  color: var(--orange);
 }
 
 .sound-toggle.enabled {
-  color: rgb(226, 0, 116);
+  color: var(--orange);
 }
 
-#logo img {
-  height: 10vh;
-  right: 0;
-}
-
+/* ─── Buttons ─────────────────────────────────────────────── */
 button {
-  background-color: rgb(226, 0, 116); /* Magenta */
+  background-color: var(--orange);
   border: none;
   width: 120px;
   height: 50px;
   color: white;
-  padding: 10px 0px;
+  padding: 10px 0;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 24px;
+  font-weight: 600;
   cursor: pointer;
-  opacity: 0.8;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s;
+  opacity: 0.9;
 }
 
-
-/* Add some hover effects to buttons */
 button:hover {
+  background-color: var(--orange-dark);
   opacity: 1;
 }
 
 .disabled-button {
-  background-color: rgb(180, 183, 182); /* Grey */
+  background-color: var(--text-muted);
   cursor: auto;
 }
 
-/* Button used to open the contact form - fixed at the bottom of the page */
+.disabled-button:hover {
+  background-color: var(--text-muted);
+}
+
+/* ─── Timer input dialog ──────────────────────────────────── */
 .open-button {
-  background-color: #555;
+  background-color: var(--orange);
   color: white;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 0.9;
   position: fixed;
   bottom: 23px;
   right: 28px;
   width: 280px;
+  border-radius: var(--radius-sm);
 }
 
-/* The popup form - hidden by default */
 .form-popup {
   display: none;
   position: fixed;
   top: 40%;
   right: 10%;
-  border: 3px solid lightgray;
+  border: 1.5px solid var(--orange-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-hover);
   z-index: 9;
 }
 
-/* Add styles to the form container */
 .form-container {
   max-width: 300px;
-  padding: 10px;
-  background-color: rgb(241, 241, 241);
- text-align: center;
+  padding: 16px;
+  background-color: var(--surface);
+  text-align: center;
+  border-radius: var(--radius-md);
 }
 
-/* Full-width input fields */
 input {
   width: 50px;
-  padding: 15px;
-  margin: 5px 10px 22px 0;
-  border: none;
-  background: #ffffff;
+  padding: 10px;
+  margin: 5px 10px 18px 0;
+  border: 1.5px solid var(--orange-border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
   font-size: 1.2rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-/* When the inputs get focus, do something */
 input:focus {
-  background-color: #ddd;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.13);
   outline: none;
   font-size: 1.4rem;
+  background: var(--surface);
 }
 
 .form-container label {
   margin-right: 10px;
   font-size: 1rem;
-  font-weight: 50;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
-/* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: rgb(226, 0, 116);
+  background-color: var(--orange);
   color: white;
-  height:auto
-  padding: 16px; 20px;
+  height: auto;
+  padding: 10px 20px;
   border: none;
   cursor: pointer;
   width: 40%;
   margin-bottom: 10px;
-  opacity: 0.8;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: background-color 0.15s;
 }
 
-/* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: grey;
+  background-color: var(--text-muted);
 }
 
-/* QR code overlay — fixed to the bottom-right corner */
+.form-container .btn:hover { background-color: var(--orange-dark); }
+.form-container .cancel:hover { background-color: #57534E; }
+.open-button:hover { opacity: 1; background-color: var(--orange-dark); }
+
+/* ─── QR code overlay ─────────────────────────────────────── */
 #qr-corner {
   position: fixed;
   bottom: 16px;
@@ -221,12 +271,14 @@ input:focus {
   display: block;
   width: 115px;
   height: 115px;
+  border-radius: var(--radius-sm);
 }
 
 #qr-corner-left p {
   margin: 0 0 4px;
-  font-size: 22px;
-  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 #qr-corner canvas {
@@ -238,13 +290,7 @@ input:focus {
 #qr-corner p {
   margin: 4px 0 0;
   font-size: 9px;
-  color: #555;
+  color: var(--text-muted);
   word-break: break-all;
   max-width: 96px;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
 }
