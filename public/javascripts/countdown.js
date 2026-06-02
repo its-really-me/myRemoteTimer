@@ -1,5 +1,5 @@
 // Credit: Mateusz Rybczonec 
-let time_limit = 150;
+let time_limit = 120;
 const FULL_DASH_ARRAY = 283;
 let WARNING_THRESHOLD = time_limit / 4;
 let ALERT_THRESHOLD = time_limit / 10;
@@ -7,7 +7,7 @@ let min = getMin(time_limit);
 let sec = getSec(time_limit);
 
 const COLOR_CODES = {
-  info: {
+  info: { 
     color: "green",
   },
   warning: {
