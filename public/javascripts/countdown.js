@@ -1,5 +1,5 @@
-// Credit: Mateusz Rybczonec
-let time_limit = 120;
+// Credit: Mateusz Rybczonec 
+let time_limit = 150;
 const FULL_DASH_ARRAY = 283;
 let WARNING_THRESHOLD = time_limit / 4;
 let ALERT_THRESHOLD = time_limit / 10;
