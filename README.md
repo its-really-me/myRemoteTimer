@@ -125,15 +125,15 @@ gcloud config set project YOUR_PROJECT_ID
 # 2. Create Artifact Registry repository (once)
 gcloud artifacts repositories create my-remote-timer \
   --repository-format=docker \
-  --location=europe-west3
+  --location=europe-north1
 
 # 3. Build and push image
-gcloud builds submit --tag europe-west3-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest
+gcloud builds submit --tag europe-north1-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest
 
 # 4. Deploy
 gcloud run deploy my-remote-timer \
-  --image europe-west3-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest \
-  --region europe-west3 \
+  --image europe-north1-docker.pkg.dev/YOUR_PROJECT_ID/my-remote-timer/my-remote-timer:latest \
+  --region europe-north1 \
   --platform managed \
   --allow-unauthenticated \
   --port 3000 \
@@ -146,7 +146,7 @@ A `cloudbuild.yaml` is included. Connect the GitHub repo in the Cloud Build cons
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `_REGION` | GCP region | `europe-west3` |
+| `_REGION` | GCP region | `europe-north1` |
 | `_REPO` | Artifact Registry repo name | `my-remote-timer` |
 | `_SERVICE_URL` | Cloud Run service URL (set after first deploy) | `my-remote-timer-abc123-ew.a.run.app` |
 

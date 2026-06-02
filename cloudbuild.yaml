@@ -36,7 +36,7 @@ steps:
       - 'NODE_ENV=production,BASE_URL=https://${_SERVICE_URL}'
 
 substitutions:
-  _REGION: europe-west3
+  _REGION: europe-north1
   _REPO: my-remote-timer
   _SERVICE_URL: my-remote-timer-HASH-ew.a.run.app  # replace with actual Cloud Run URL after first deploy
 
