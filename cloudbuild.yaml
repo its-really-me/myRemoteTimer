@@ -3,6 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
+      - '--platform=linux/amd64'
       - '-t'
       - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/my-remote-timer:$COMMIT_SHA'
       - '-t'
@@ -33,12 +34,12 @@ steps:
       - '--port'
       - '3000'
       - '--set-env-vars'
-      - 'NODE_ENV=production,BASE_URL=https://${_SERVICE_URL}'
+      - 'NODE_ENV=production,BASE_URL=${_SERVICE_URL}'
 
 substitutions:
   _REGION: europe-north1
   _REPO: my-remote-timer
-  _SERVICE_URL: my-remote-timer-HASH-ew.a.run.app  # replace with actual Cloud Run URL after first deploy
+  _SERVICE_URL: https://my-remote-timer-347621148423.europe-north1.run.app  # replace with actual Cloud Run URL after first deploy
 
 images:
   - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/my-remote-timer:$COMMIT_SHA'
